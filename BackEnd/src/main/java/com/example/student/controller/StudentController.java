@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @CrossOrigin("http://localhost:4200")
@@ -32,11 +33,11 @@ public class StudentController {
         return studentService.getAll();
     }
 
-    // http://localhost:8080/api/student?id=12
-    @GetMapping("student")
-    public ResponseEntity<Employee> getStudentById (@RequestParam Long id){
-        Employee employee=  studentService.getEmployee(id);
+    // http://localhost:8080/api/students/1
+    @GetMapping("students/{id}")
+    public ResponseEntity<Employee> getStudentById (@PathVariable("id") Long id){
         logger.info("getStudentById");
+        Employee  employee=  studentService.getEmployee(id);
         return new ResponseEntity<Employee>(employee, HttpStatus.ACCEPTED);
     }
 
@@ -47,19 +48,19 @@ public class StudentController {
         return new ResponseEntity<Employee>( studentService.addEmployee(employee), HttpStatus.OK);
     }
 
-    // http://localhost:8080/api/students?id=12
-    @PutMapping("students")
-    public Employee editStudent(@RequestBody Employee employee,@RequestParam Long id){
+    // http://localhost:8080/api/students/3
+    @PutMapping("students/{id}")
+    public Employee editStudent(@RequestBody Employee employee,@PathVariable  Long id){
         logger.info("editStudent");
         employee.setId(id);
         return studentService.updateEmployee(employee);
     }
 
     @DeleteMapping("students")
-    public   ResponseEntity<String> removeStudent(@RequestParam Long id){
+    public   ResponseEntity removeStudent(@RequestParam Long id){
         logger.info("removeStudent");
         studentService.deleteEmployee(id);
-        return new ResponseEntity("removeStudent",HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 

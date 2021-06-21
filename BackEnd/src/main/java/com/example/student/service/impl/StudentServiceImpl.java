@@ -1,12 +1,14 @@
 package com.example.student.service.impl;
 
 import com.example.student.deo.EmployeeRepository;
+import com.example.student.exception.ResourceNotFoundException;
 import com.example.student.model.Employee;
 import com.example.student.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class StudentServiceImpl implements StudentService {
@@ -19,7 +21,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Employee getEmployee(Long id) {
-       return employeeRepository.getById(id);
+        return        employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
+
     }
 
     @Override
